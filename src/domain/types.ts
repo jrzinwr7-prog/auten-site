@@ -2,6 +2,8 @@ export type Sex = 'masculino' | 'feminino' | 'prefiro-nao-informar'
 export type Experience = 'sedentario' | 'iniciante' | 'intermediario'
 export type TrainingLocation = 'casa' | 'academia'
 export type AppTab = 'hoje' | 'treino' | 'alimentacao' | 'evolucao' | 'perfil'
+export type FormQuality = 'boa' | 'ok' | 'ajustar'
+export type TrainingDifficulty = 1 | 2 | 3 | 4 | 5
 
 export interface Profile {
   id: string
@@ -16,6 +18,8 @@ export interface Profile {
   foodBudget: number
   goalWeightKg: number
   goalDate?: string
+  /** IDs do catálogo que a pessoa disse ter acesso/aceitar comer. */
+  availableFoodIds?: string[]
   createdAt: string
 }
 
@@ -29,7 +33,19 @@ export interface Exercise {
   restSeconds: number
   cue: string
   caution?: string
+  /** Da variação mais simples para a mais exigente. */
   progression: string[]
+}
+
+export type AdaptationMode = 'base' | 'consolidar' | 'avancar'
+
+export interface PlannedExercise extends Exercise {
+  displayName: string
+  adaptation: {
+    mode: AdaptationMode
+    note: string
+    completedGoodSessions: number
+  }
 }
 
 export interface PlanSession {
@@ -38,18 +54,37 @@ export interface PlanSession {
   title: string
   focus: string
   estimatedMinutes: number
-  exercises: Exercise[]
+  /** Dia estável dentro do plano. Não depende de sorte ou da ordem de cliques. */
+  dayNumber: number
+  weekday: number
+  weekdayLabel: string
+  programWeek: number
+  exercises: PlannedExercise[]
+}
+
+export interface ExerciseResult {
+  exerciseId: string
+  reps: number
+  form: FormQuality
 }
 
 export interface WorkoutLog {
   id: string
   sessionId: string
   completedAt: string
-  exerciseResults: Array<{
-    exerciseId: string
-    reps: number
-    form: 'boa' | 'ok' | 'ajustar'
-  }>
+  /** Data de referência do Dia N. Permite visualizar aderência no calendário. */
+  plannedDate?: string
+  difficulty?: TrainingDifficulty
+  volume?: number
+  exerciseResults: ExerciseResult[]
+}
+
+/** Progresso parcial de um Dia, persistido caso a pessoa feche o app no meio do treino. */
+export interface WorkoutDraft {
+  sessionId: string
+  plannedDate: string
+  updatedAt: string
+  exerciseResults: ExerciseResult[]
 }
 
 export interface WeightEntry {
@@ -91,6 +126,11 @@ export interface ReminderSettings {
   notificationPermission?: NotificationPermission | 'unsupported'
 }
 
+export interface Achievement {
+  id: string
+  unlockedAt: string
+}
+
 export interface PersistedAppState {
   id: 'current'
   profile?: Profile
@@ -98,7 +138,9 @@ export interface PersistedAppState {
   measurements: Measurements[]
   progressPhotos: ProgressPhoto[]
   workoutLogs: WorkoutLog[]
+  workoutDrafts?: WorkoutDraft[]
   mealLogs: MealLog[]
+  achievements?: Achievement[]
   reminders: ReminderSettings
 }
 
