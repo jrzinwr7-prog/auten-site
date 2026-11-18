@@ -5,6 +5,7 @@ import '@fontsource-variable/manrope'
 import '@fontsource-variable/space-grotesk'
 import App from './App'
 import './styles/global.css'
+import './styles/v2.css'
 
 registerSW({ immediate: true })
 

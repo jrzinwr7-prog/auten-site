@@ -1,0 +1,106 @@
+@layer components {
+  /* V2 — plano adaptativo, alimentos disponíveis e conquistas */
+  .form-error { margin-top: 13px; padding: 10px; border: 1px solid rgba(255,131,140,.3); border-radius: 11px; color: #FFD4D8; background: rgba(255,131,140,.09); font-size: 10px; font-weight: 700; }
+  .food-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+  .food-picker button { display: flex; min-height: 68px; align-items: center; justify-content: space-between; gap: 6px; border: 1px solid var(--line); border-radius: 13px; padding: 10px; color: var(--ink-soft); text-align: left; background: rgba(255,255,255,.025); transition: transform .18s ease, border .18s ease, background .18s ease; }
+  .food-picker button:active { transform: scale(.98); }
+  .food-picker button.is-selected { border-color: rgba(121,231,189,.44); color: #E8FFF6; background: linear-gradient(145deg, rgba(121,231,189,.14), rgba(94,140,255,.08)); }
+  .food-picker button > span { display: grid; gap: 4px; }
+  .food-picker b { font-size: 10px; }
+  .food-picker small { color: var(--muted); font-size: 8px; line-height: 1.35; }
+  .food-picker svg { flex: 0 0 auto; color: var(--mint); }
+  .selection-count { margin-top: 11px; color: var(--cyan); font-size: 10px; font-weight: 800; }
+  .modal-food-picker { max-height: 320px; overflow: auto; margin-top: 0; margin-bottom: 18px; padding-right: 2px; }
+  .available-foods-card { padding: 13px; }
+  .food-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .food-tags > span { padding: 6px 8px; border: 1px solid rgba(121,231,189,.17); border-radius: 8px; color: #BDEEDB; background: rgba(121,231,189,.07); font-size: 9px; }
+  .food-tags > .empty-tag { border-color: var(--line); color: var(--muted); background: transparent; }
+  .available-foods-card > button { display: inline-flex; align-items: center; gap: 5px; margin-top: 13px; border: 0; padding: 0; color: var(--cyan); background: transparent; font-size: 10px; font-weight: 800; }
+  .no-recipes { display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 14px; }
+  .no-recipes > svg { color: var(--cyan); }
+  .no-recipes > div { display: grid; gap: 4px; }
+  .no-recipes b { font-size: 11px; }
+  .no-recipes p { color: var(--muted); font-size: 9px; line-height: 1.5; }
+  .no-recipes > button { grid-column: 1 / -1; min-height: 33px; border: 1px solid rgba(121,231,255,.22); border-radius: 9px; color: var(--cyan); background: rgba(121,231,255,.06); font-size: 10px; font-weight: 800; }
+
+  .discipline-calendar { padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: linear-gradient(145deg, rgba(33,48,80,.75), rgba(17,27,48,.78)); }
+  .discipline-calendar > header { display: grid; grid-template-columns: 33px 1fr auto; align-items: center; gap: 8px; }
+  .discipline-icon { display: grid; width: 33px; height: 33px; place-items: center; border-radius: 10px; color: var(--cyan); background: rgba(121,231,255,.09); }
+  .discipline-calendar > header > div { display: grid; gap: 2px; }
+  .discipline-calendar > header p { color: var(--muted); font-size: 8px; font-weight: 800; letter-spacing: .08em; }
+  .discipline-calendar > header b { font-size: 12px; }
+  .discipline-count { display: inline-flex; align-items: center; gap: 4px; color: var(--mint); font-size: 10px; font-weight: 800; }
+  .calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .calendar-weekdays { margin: 16px 0 5px; color: var(--muted-2); text-align: center; font-size: 8px; font-weight: 800; }
+  .calendar-day { display: grid; aspect-ratio: 1; min-width: 0; place-items: center; border: 1px solid var(--line); border-radius: 7px; color: var(--muted); background: rgba(7,13,27,.35); font-size: 8px; font-weight: 800; }
+  .calendar-day.completed { border-color: rgba(121,231,189,.38); color: #DFFFF1; background: linear-gradient(145deg, #2A786A, #245B65); box-shadow: 0 0 14px rgba(121,231,189,.14); animation: day-complete .5s ease both; }
+  .calendar-day.planned { border-color: rgba(121,231,255,.5); color: #D8F9FF; background: rgba(94,140,255,.22); }
+  .calendar-day.missed { border-color: rgba(255,200,107,.2); color: #D5B985; background: rgba(255,200,107,.08); }
+  .calendar-day.rest { border-style: dashed; color: #71809F; }
+  .discipline-calendar > footer { display: flex; flex-wrap: wrap; gap: 7px 11px; margin-top: 13px; color: var(--muted); font-size: 8px; }
+  .discipline-calendar > footer span { display: inline-flex; align-items: center; gap: 4px; }
+  .discipline-calendar > footer i { width: 7px; height: 7px; border-radius: 3px; }
+  .legend-completed { background: var(--mint); } .legend-planned { background: var(--cyan); } .legend-missed { background: var(--warning); } .legend-rest { border: 1px solid var(--muted); }
+  .achievement-row { display: grid; gap: 8px; }
+  .achievement-card { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; padding: 11px; border-color: rgba(255,200,107,.2); background: linear-gradient(145deg, rgba(255,200,107,.10), rgba(31,40,66,.76)); }
+  .achievement-card > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; background: rgba(255,200,107,.12); font-size: 17px; }
+  .achievement-card > div { display: grid; gap: 3px; }
+  .achievement-card b { font-size: 10px; }
+  .achievement-card small { color: var(--muted); font-size: 8px; line-height: 1.35; }
+  .achievement-card > svg { color: var(--warning); }
+
+  .session-hero { flex-wrap: wrap; }
+  .session-hero.is-complete { border-color: rgba(121,231,189,.35); background: radial-gradient(circle at 93% 10%, rgba(121,231,189,.21), transparent 38%), linear-gradient(145deg, rgba(29,86,75,.55), rgba(25,35,61,.84)); }
+  .session-progress { display: flex; width: 100%; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 9px; }
+  .session-progress span { display: inline-flex; align-items: center; gap: 4px; color: var(--cyan); font-weight: 800; }
+  .session-progress b { color: var(--ink-soft); font-size: 9px; }
+  .plan-tabs button.is-done { border-color: rgba(121,231,189,.25); }
+  .plan-tabs button.is-done b { display: inline-flex; align-items: center; gap: 3px; color: var(--mint); }
+  .adaptation-alert { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; padding: 12px; border: 1px solid rgba(121,231,255,.22); border-radius: 15px; background: rgba(121,231,255,.06); }
+  .adaptation-alert.is-recovery { border-color: rgba(255,200,107,.22); background: rgba(255,200,107,.07); }
+  .adaptation-alert > span { display: grid; flex: 0 0 31px; width: 31px; height: 31px; place-items: center; border-radius: 10px; color: var(--cyan); background: rgba(121,231,255,.10); }
+  .adaptation-alert.is-recovery > span { color: var(--warning); background: rgba(255,200,107,.10); }
+  .adaptation-alert b { font-size: 11px; }
+  .adaptation-alert p { margin-top: 3px; color: var(--ink-soft); font-size: 10px; line-height: 1.5; }
+  .exercise-summary { grid-template-columns: 27px 1fr 8px auto; }
+  .adaptation-dot { width: 7px; height: 7px; border-radius: 99px; background: #7080A0; }
+  .adaptation-dot.consolidar { background: var(--warning); box-shadow: 0 0 10px rgba(255,200,107,.6); }
+  .adaptation-dot.avancar { background: var(--mint); box-shadow: 0 0 10px rgba(121,231,189,.6); }
+  .adaptation-copy { display: flex; gap: 5px; align-items: flex-start; color: var(--ink-soft); font-size: 9px; line-height: 1.5; }
+  .adaptation-copy svg { flex: 0 0 auto; color: var(--cyan); }
+  .adaptation-copy.consolidar svg { color: var(--warning); }
+  .exercise-check { display: inline-flex; width: max-content; align-items: center; gap: 5px; border: 1px solid rgba(121,231,255,.24); border-radius: 8px; padding: 7px 9px; color: var(--cyan); background: rgba(121,231,255,.06); font-size: 9px; font-weight: 800; }
+  .exercise-check.is-checked { border-color: rgba(121,231,189,.28); color: var(--mint); background: rgba(121,231,189,.07); }
+  .difficulty-checkin { margin: 0 0 17px; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(7,12,26,.28); }
+  .difficulty-checkin > div:first-child { display: flex; gap: 8px; align-items: flex-start; color: var(--cyan); }
+  .difficulty-checkin > div:first-child > span { display: grid; gap: 2px; color: var(--ink-soft); }
+  .difficulty-checkin b { font-size: 10px; }
+  .difficulty-checkin small { color: var(--muted); font-size: 8px; }
+  .difficulty-options { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 11px; }
+  .difficulty-options button { min-height: 39px; border: 1px solid var(--line); border-radius: 8px; padding: 4px; color: var(--muted); background: transparent; font-size: 8px; font-weight: 800; }
+  .difficulty-options button.is-selected { border-color: rgba(121,231,255,.45); color: #E1FBFF; background: rgba(94,140,255,.23); }
+  .difficulty-options button:nth-child(4).is-selected, .difficulty-options button:nth-child(5).is-selected { border-color: rgba(255,200,107,.45); color: #FFE0A7; background: rgba(255,200,107,.14); }
+
+  .achievement-overlay { position: fixed; z-index: 100; inset: 0; display: grid; place-items: center; overflow: hidden; padding: 20px; background: rgba(3,7,19,.75); backdrop-filter: blur(8px); animation: fade-in .22s ease both; }
+  .achievement-modal { position: relative; width: min(100%, 350px); overflow: hidden; padding: 27px 22px 22px; border: 1px solid rgba(255,200,107,.42); border-radius: 24px; color: var(--ink); text-align: center; background: radial-gradient(circle at 50% -8%, rgba(255,200,107,.36), transparent 43%), linear-gradient(160deg, #273454, #17213A); box-shadow: 0 26px 70px rgba(0,0,0,.44); animation: achievement-pop .42s cubic-bezier(.17,.89,.29,1.38) both; }
+  .achievement-close { position: absolute; top: 12px; right: 12px; display: grid; width: 29px; height: 29px; place-items: center; border: 0; border-radius: 9px; color: var(--ink-soft); background: rgba(255,255,255,.07); }
+  .achievement-medal { display: grid; width: 69px; height: 69px; margin: 0 auto 14px; place-items: center; border: 1px solid rgba(255,228,163,.55); border-radius: 50%; background: radial-gradient(circle at 34% 25%, #FFF4C7, #E4A84B); box-shadow: 0 0 0 10px rgba(255,200,107,.08), 0 0 40px rgba(255,200,107,.34); font-size: 32px; animation: medal-float 2.7s ease-in-out infinite; }
+  .achievement-modal p { color: #FFE0A7; font-size: 9px; font-weight: 800; letter-spacing: .14em; }
+  .achievement-modal h2 { margin-top: 8px; font-size: 26px; }
+  .achievement-modal > span:last-of-type { display: block; margin: 8px auto 20px; color: var(--ink-soft); font-size: 11px; line-height: 1.55; }
+  .achievement-modal > button:last-child { display: inline-flex; min-height: 39px; align-items: center; gap: 6px; border: 0; border-radius: 11px; padding: 0 13px; color: #211402; background: var(--warning); font-size: 10px; font-weight: 800; }
+  .achievement-burst { position: absolute; inset: 0; pointer-events: none; }
+  .achievement-burst i { position: absolute; width: 7px; height: 18px; border-radius: 5px; background: var(--warning); animation: confetti 1.3s ease-in-out infinite; }
+  .achievement-burst i:nth-child(1) { top: 13%; left: 17%; background: var(--cyan); transform: rotate(25deg); } .achievement-burst i:nth-child(2) { top: 21%; right: 16%; background: var(--mint); animation-delay: -.4s; } .achievement-burst i:nth-child(3) { top: 55%; left: 8%; background: #A18CFF; animation-delay: -.8s; } .achievement-burst i:nth-child(4) { top: 62%; right: 10%; background: var(--warning); animation-delay: -.2s; } .achievement-burst i:nth-child(5) { top: 10%; left: 50%; background: #F88DCC; animation-delay: -.6s; }
+}
+
+@layer utilities {
+  @keyframes day-complete { from { transform: scale(.65); opacity: .1; } to { transform: scale(1); opacity: 1; } }
+  @keyframes achievement-pop { from { transform: translateY(30px) scale(.82); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+  @keyframes medal-float { 50% { transform: translateY(-5px) rotate(4deg); } }
+  @keyframes confetti { 50% { transform: translateY(9px) rotate(30deg); } }
+  @media (max-width: 380px) {
+    .food-picker { grid-template-columns: 1fr; }
+    .difficulty-options { grid-template-columns: repeat(3, 1fr); }
+  }
+}

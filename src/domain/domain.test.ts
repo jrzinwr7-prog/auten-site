@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { calculateForecast, calculateNutritionTarget } from './calculations'
 import { getProgressionSuggestion } from './progression'
+import { adaptExercise, generateTrainingPlan } from './planGenerator'
+import { recipesForAvailableFoods } from '../data/nutrition'
 import type { Exercise, Profile, WorkoutLog } from './types'
 
 const profile: Profile = {
@@ -36,5 +38,36 @@ describe('progression rule', () => {
 
   it('does not progress when form needs adjustment', () => {
     expect(getProgressionSuggestion(exercise, [log('2026-11-01T12:00:00Z', 15, 'boa'), log('2026-11-08T12:00:00Z', 15, 'ajustar')])).toBeNull()
+  })
+
+  it('reduces the next prescription after two difficult sessions', () => {
+    const difficult = [
+      { ...log('2026-11-01T12:00:00Z', 8, 'ajustar'), difficulty: 4 as const },
+      { ...log('2026-11-08T12:00:00Z', 8, 'ok'), difficulty: 5 as const }
+    ]
+    const adapted = adaptExercise(exercise, difficult)
+    expect(adapted.adaptation.mode).toBe('consolidar')
+    expect(adapted.sets).toBe(2)
+    expect(adapted.repRange[1]).toBeLessThan(exercise.repRange[1])
+  })
+
+  it('increases reps and volume only after repeatable good sessions', () => {
+    const successful = [1, 2, 3, 4].map((index) => ({ ...log(`2026-11-0${index}T12:00:00Z`, 15, 'boa'), difficulty: 2 as const }))
+    const adapted = adaptExercise(exercise, successful)
+    expect(adapted.adaptation.mode).toBe('avancar')
+    expect(adapted.sets).toBe(4)
+    expect(adapted.repRange[0]).toBeGreaterThan(exercise.repRange[0])
+  })
+})
+
+describe('deterministic plan and food filtering', () => {
+  it('assigns fixed days for a four-day plan', () => {
+    const plan = generateTrainingPlan(profile, [], new Date('2026-11-18T12:00:00'))
+    expect(plan.map((session) => [session.dayNumber, session.weekday])).toEqual([[1, 1], [2, 2], [3, 4], [4, 5]])
+  })
+
+  it('only releases recipes compatible with selected foods', () => {
+    const recipes = recipesForAvailableFoods(['milk', 'banana', 'oats', 'peanuts'])
+    expect(recipes.map((recipe) => recipe.id)).toEqual(['smoothie', 'oats'])
   })
 })

@@ -7,11 +7,15 @@ Aplicação PWA **mobile-first**, em pt-BR, para jovens e iniciantes que desejam
 ## O que a primeira versão entrega
 
 - Onboarding de perfil: idade, altura, peso, nível, local de treino, dias disponíveis, orçamento, meta e prazo.
-- Plano de treino para casa com divisão adaptada a 2–4 dias por semana.
-- Catálogo de exercícios, dicas de forma, avisos de segurança e registro de sessão.
-- Regra de progressão: sugere a próxima variação após duas sessões no topo da faixa de repetições, com boa forma registrada.
-- Estimativa inicial de calorias e proteína, receitas simples, checklist de compras e orçamento editável.
+- Plano de treino para casa com divisão fixa e previsível a 2–4 dias por semana (Dia 1, Dia 2 etc.).
+- Auto-regulação: duas sessões difíceis reduzem temporariamente reps/séries; sessões boas e repetíveis aumentam reps, volume e sinalizam a próxima variação.
+- Progresso parcial do Dia persistido localmente por exercício, mesmo se o app for fechado durante o treino.
+- Catálogo de exercícios, dicas de forma, avisos de segurança, check-in de dificuldade e registro de sessão.
+- Seleção de alimentos disponíveis durante onboarding; receitas e lista de compras são filtradas apenas pelo que a pessoa marcou que pode comer/comprar.
+- Estimativa inicial de calorias e proteína, receitas simples e orçamento editável.
 - Registro de refeições, peso semanal, medidas mensais e fotos de progresso.
+- Calendário de disciplina dos últimos 28 dias, incluindo treino concluído, planejado, não concluído e descanso planejado.
+- Conquistas animadas por consistência, refeições, sessões e marcos de peso.
 - Gráfico de peso, marcos e previsão em faixa de 0,4–0,6 kg por semana.
 - Conteúdo educativo curto sobre consistência, sono e mitos de treino.
 - Lembretes opt-in de refeições, respeitando a permissão do navegador.

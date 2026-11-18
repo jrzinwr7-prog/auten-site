@@ -16,6 +16,7 @@ export const demoState: PersistedAppState = {
     foodBudget: 220,
     goalWeightKg: 62,
     goalDate: '',
+    availableFoodIds: ['eggs', 'milk', 'rice', 'beans', 'oats', 'banana', 'peanuts', 'vegetables', 'bread'],
     createdAt: '2026-11-18T12:00:00.000Z'
   },
   weightEntries: [
