@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: process.env.BODYUP_PAGES === 'true' ? '/auten-site/' : '/',
+  // GitHub Pages serves this checked-in production bundle from /docs on the main branch.
+  base: process.env.BODYUP_PAGES === 'true' ? '/auten-site/docs/' : '/',
   server: {
     host: '0.0.0.0',
     allowedHosts: true
