@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  base: process.env.BODYUP_PAGES === 'true' ? '/auten-site/' : '/',
   server: {
     host: '0.0.0.0',
     allowedHosts: true
