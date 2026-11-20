@@ -6,6 +6,7 @@ import '@fontsource-variable/space-grotesk'
 import App from './App'
 import './styles/global.css'
 import './styles/v2.css'
+import './styles/v3.css'
 
 registerSW({ immediate: true })
 

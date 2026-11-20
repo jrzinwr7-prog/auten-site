@@ -1,7 +1,8 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { Camera, ChevronRight, CircleGauge, ImagePlus, Plus, Ruler, Scale, Trophy, Upload } from 'lucide-react'
 import { Modal } from '../components/Modal'
 import { Button, Card, Metric, Pill, SectionHeading } from '../components/ui'
+import { NumericInput } from '../components/NumericInput'
 import { calculateForecast, currentWeight, formatKg, formatShortDate } from '../domain/calculations'
 import type { Measurements, Profile, ProgressPhoto, WeightEntry } from '../domain/types'
 
@@ -48,7 +49,6 @@ export function Progress({ profile, weightEntries, measurements, photos, openWei
   const [weightOpen, setWeightOpen] = useState(false)
   const [measureOpen, setMeasureOpen] = useState(false)
   const [photoOpen, setPhotoOpen] = useState(false)
-  const weightRef = useRef<HTMLInputElement>(null)
   const photoRef = useRef<HTMLInputElement>(null)
   const current = currentWeight(profile, weightEntries)
   const gained = current - profile.weightKg
@@ -70,14 +70,19 @@ export function Progress({ profile, weightEntries, measurements, photos, openWei
     <section className="section-block"><SectionHeading eyebrow="MEDIDAS · MENSAL" title="Mais do que a balança" action={<button type="button" className="text-action" onClick={() => setMeasureOpen(true)}>Adicionar <Plus size={15}/></button>}/>{latestMeasures ? <Card className="measures-card"><div className="measure-grid">{([['Braço', latestMeasures.armCm], ['Peito', latestMeasures.chestCm], ['Coxa', latestMeasures.thighCm], ['Cintura', latestMeasures.waistCm]] as Array<[string, number | undefined]>).map(([label, value]) => <div key={label}><span>{label}</span><b>{value ? `${value} cm` : '—'}</b></div>)}</div><small>última atualização: {formatShortDate(latestMeasures.date)}</small></Card> : <button type="button" className="empty-card" onClick={() => setMeasureOpen(true)}><span><Ruler size={20}/></span><div><b>Seu primeiro retrato mensal</b><p>Registre medidas para acompanhar mudanças que o peso não mostra.</p></div><ChevronRight size={18}/></button>}</section>
     <section className="section-block"><SectionHeading eyebrow="FOTOS · QUINZENAL" title="Progresso visual" action={<button type="button" className="text-action" onClick={() => setPhotoOpen(true)}>Adicionar <Plus size={15}/></button>}/>{sortedPhotos.length ? <div className="photos-grid">{sortedPhotos.slice(0, 4).map((photo) => <figure key={photo.id}><img src={photo.dataUrl} alt={`Foto de progresso de ${formatShortDate(photo.date)}`}/><figcaption>{formatShortDate(photo.date)}</figcaption></figure>)}<button type="button" className="photo-add" onClick={() => setPhotoOpen(true)}><ImagePlus size={20}/>Adicionar</button></div> : <button type="button" className="photo-empty" onClick={() => setPhotoOpen(true)}><Camera size={22}/><b>Fotos só para você</b><span>Salvas localmente, em seu dispositivo.</span></button>}</section>
     <Card className="milestone-card"><span><Trophy size={20}/></span><div><small>PRÓXIMO MARCO</small><b>{toGoal > 0 ? `Faltam ${formatKg(Math.min(1, toGoal))} para o próximo +1 kg` : 'Meta alcançada — hora de revisar o próximo passo'}</b></div><CircleGauge size={23}/></Card>
-    {weightOpen && <Modal title="Registrar peso" onClose={() => setWeightOpen(false)}><p className="modal-copy">Tente pesar-se em condições parecidas. Uma vez por semana já é suficiente para enxergar a tendência.</p><label className="field"><span>Peso de hoje (kg)</span><input ref={weightRef} autoFocus type="number" min="20" max="300" step="0.1" defaultValue={current} /></label><Button className="wide" onClick={() => { const value = Number(weightRef.current?.value); if (value > 0) { onLogWeight(value); setWeightOpen(false) } }}>Salvar registro</Button></Modal>}
+    {weightOpen && <WeightModal current={current} onClose={() => setWeightOpen(false)} onSave={(weight) => { onLogWeight(weight); setWeightOpen(false) }}/>}
     {measureOpen && <MeasureModal onClose={() => setMeasureOpen(false)} onSave={(values) => { onLogMeasurements(values); setMeasureOpen(false) }}/>}
     {photoOpen && <Modal title="Adicionar foto" onClose={() => setPhotoOpen(false)}><div className="photo-upload"><Upload size={26}/><b>Escolha uma foto de progresso</b><p>A imagem é comprimida e salva apenas no banco local deste navegador.</p><input ref={photoRef} type="file" accept="image/*" onChange={handleImage}/></div></Modal>}
   </>
 }
 
+function WeightModal({ current, onClose, onSave }: { current: number; onClose: () => void; onSave: (weight: number) => void }) {
+  const [weight, setWeight] = useState(current)
+  return <Modal title="Registrar peso" onClose={onClose}><p className="modal-copy">Tente pesar-se em condições parecidas. Uma vez por semana já é suficiente para enxergar a tendência.</p><label className="field"><span>Peso de hoje (kg)</span><NumericInput autoFocus minimum={20} maximum={300} value={weight} onValueChange={setWeight}/><small className="numeric-hint">Você pode apagar e digitar novamente sem o campo inserir zero.</small></label><Button className="wide" onClick={() => onSave(weight)}>Salvar registro</Button></Modal>
+}
+
 function MeasureModal({ onClose, onSave }: { onClose: () => void; onSave: (values: Omit<Measurements, 'id' | 'date'>) => void }) {
-  const [values, setValues] = useState<Record<string, string>>({ armCm: '', chestCm: '', thighCm: '', calfCm: '', waistCm: '' })
+  const [values, setValues] = useState<Record<string, number | undefined>>({ armCm: undefined, chestCm: undefined, thighCm: undefined, calfCm: undefined, waistCm: undefined })
   const labels: Array<[keyof Omit<Measurements, 'id' | 'date'>, string]> = [['armCm', 'Braço'], ['chestCm', 'Peito'], ['thighCm', 'Coxa'], ['calfCm', 'Panturrilha'], ['waistCm', 'Cintura']]
-  return <Modal title="Registrar medidas" onClose={onClose}><p className="modal-copy">Registre uma vez por mês, de preferência no mesmo horário e nas mesmas condições.</p><div className="two-fields">{labels.map(([key, label]) => <label className="field" key={key}><span>{label} (cm)</span><input type="number" min="0" step="0.1" value={values[key]} onChange={(event) => setValues((current) => ({ ...current, [key]: event.target.value }))}/></label>)}</div><Button className="wide" onClick={() => onSave(Object.fromEntries(Object.entries(values).filter(([, value]) => value).map(([key, value]) => [key, Number(value)])))}>Salvar medidas</Button></Modal>
+  return <Modal title="Registrar medidas" onClose={onClose}><p className="modal-copy">Registre uma vez por mês, de preferência no mesmo horário e nas mesmas condições.</p><div className="two-fields">{labels.map(([key, label]) => <label className="field" key={key}><span>{label} (cm)</span><NumericInput minimum={0} value={values[key]} onValueChange={(value) => setValues((current) => ({ ...current, [key]: value }))} onEmpty={() => setValues((current) => ({ ...current, [key]: undefined }))}/></label>)}</div><Button className="wide" onClick={() => onSave(Object.fromEntries(Object.entries(values).filter(([, value]) => value !== undefined)))}>Salvar medidas</Button></Modal>
 }
