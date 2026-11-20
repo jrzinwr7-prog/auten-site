@@ -16,6 +16,8 @@ Aplicação PWA **mobile-first**, em pt-BR, para jovens e iniciantes que desejam
 - Registro de refeições, peso semanal, medidas mensais e fotos de progresso.
 - Calendário de disciplina dos últimos 28 dias, incluindo treino concluído, planejado, não concluído e descanso planejado.
 - Conquistas animadas por consistência, refeições, sessões e marcos de peso.
+- Interface mobile refinada: alvos de toque maiores, hierarquia de uma ação principal, calendário com legenda e imagem editorial local gerada por IA na chegada.
+- Campos numéricos que permitem apagar e digitar novamente sem transformar valor vazio em `0` durante a edição.
 - Gráfico de peso, marcos e previsão em faixa de 0,4–0,6 kg por semana.
 - Conteúdo educativo curto sobre consistência, sono e mitos de treino.
 - Lembretes opt-in de refeições, respeitando a permissão do navegador.

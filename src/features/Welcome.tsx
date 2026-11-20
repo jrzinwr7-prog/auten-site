@@ -5,6 +5,7 @@ export function Welcome({ onStart, onDemo }: { onStart: () => void; onDemo: () =
   return <main className="welcome-page">
     <header className="welcome-header"><Brand /><Pill tone="blue">BETA LOCAL</Pill></header>
     <div className="welcome-orbit" aria-hidden="true"><span/><span/><i/></div>
+    <div className="welcome-photo" aria-hidden="true"><img src="/images/bodyup-hero.jpg" alt=""/><div className="welcome-photo-chip"><span>01</span> seu primeiro passo</div></div>
     <section className="welcome-hero">
       <p className="eyebrow"><i className="live-dot"/> O seu plano, no seu ritmo</p>
       <h1>Ganhar massa não precisa ser <em>um caos.</em></h1>
